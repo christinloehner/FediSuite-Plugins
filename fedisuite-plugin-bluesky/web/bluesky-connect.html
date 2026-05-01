@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Connect Bluesky</title>
+    <script src="/plugin-sdk/fedisuite-plugin-web.js"></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #08111d;
+        --panel: rgba(12, 21, 36, 0.92);
+        --panel-strong: rgba(14, 26, 44, 0.98);
+        --border: rgba(96, 165, 250, 0.18);
+        --text: #eef5ff;
+        --muted: #9eb3cb;
+        --accent: #0ea5e9;
+        --accent-strong: #38bdf8;
+        --danger: #fb7185;
+        --success: #34d399;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 32%),
+          radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.14), transparent 28%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      .wrap {
+        padding: 24px;
+      }
+
+      .card {
+        max-width: 760px;
+        margin: 0 auto;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: 0 24px 80px rgba(2, 6, 23, 0.42);
+        backdrop-filter: blur(18px);
+        overflow: hidden;
+      }
+
+      .hero {
+        padding: 28px 28px 20px;
+        background:
+          linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(59, 130, 246, 0.08)),
+          var(--panel-strong);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.14);
+        color: #d7f2ff;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 16px 0 8px;
+        font-size: 30px;
+        line-height: 1.1;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .body {
+        padding: 24px 28px 28px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin: 20px 0 22px;
+      }
+
+      .note {
+        border: 1px solid rgba(125, 211, 252, 0.14);
+        border-radius: 18px;
+        background: rgba(8, 47, 73, 0.34);
+        padding: 16px 18px;
+      }
+
+      .note strong {
+        display: block;
+        margin-bottom: 8px;
+        color: white;
+      }
+
+      form {
+        display: grid;
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        color: #dbeafe;
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.7);
+        color: white;
+        padding: 14px 16px;
+        font-size: 15px;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: rgba(56, 189, 248, 0.7);
+        box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.14);
+      }
+
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: 0;
+        border-radius: 16px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        color: white;
+        padding: 14px 18px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        min-width: 210px;
+      }
+
+      button:disabled {
+        opacity: 0.65;
+        cursor: wait;
+      }
+
+      .message {
+        display: none;
+        border-radius: 16px;
+        padding: 14px 16px;
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .message.visible {
+        display: block;
+      }
+
+      .message.error {
+        background: rgba(190, 24, 93, 0.14);
+        border: 1px solid rgba(251, 113, 133, 0.22);
+        color: #fecdd3;
+      }
+
+      .message.success {
+        background: rgba(16, 185, 129, 0.14);
+        border: 1px solid rgba(52, 211, 153, 0.22);
+        color: #bbf7d0;
+      }
+
+      .footer {
+        margin-top: 22px;
+        font-size: 12px;
+        color: #87a0bf;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="hero">
+          <div class="eyebrow" id="eyebrow">Bluesky Provider</div>
+          <h1 id="title">Bluesky verbinden</h1>
+          <p id="intro">Verbinde dein Bluesky-Konto sicher mit Handle, App-Passwort und optionalem PDS-Host. Die Session wird direkt im Provider-Plugin erstellt.</p>
+        </div>
+        <div class="body">
+          <div class="grid">
+            <div class="note">
+              <strong id="noteAppPasswordTitle">App-Passwort verwenden</strong>
+              <span id="noteAppPasswordText">Nutze nach Möglichkeit ein Bluesky-App-Passwort statt deines normalen Kontopassworts.</span>
+            </div>
+            <div class="note">
+              <strong id="notePdsTitle">PDS nur bei Bedarf anpassen</strong>
+              <span id="notePdsText">Für normale `bsky.social`-Konten reicht der Standardwert. Bei anderen Hosts trage deinen eigenen PDS ein.</span>
+            </div>
+          </div>
+
+          <div id="message" class="message" role="status" aria-live="polite"></div>
+
+          <form id="connect-form">
+            <div class="field">
+              <label for="identifier" id="identifierLabel">Handle oder DID</label>
+              <input id="identifier" name="identifier" type="text" autocomplete="username" placeholder="alice.bsky.social" required />
+              <div class="hint" id="identifierHint">Beispiel: `alice.bsky.social` oder `did:plc:...`</div>
+            </div>
+
+            <div class="field">
+              <label for="app-password" id="passwordLabel">App-Passwort</label>
+              <input id="app-password" name="appPassword" type="password" autocomplete="current-password" placeholder="xxxx-xxxx-xxxx-xxxx" required />
+              <div class="hint" id="passwordHint">Das Passwort wird nur serverseitig zur Session-Erzeugung verwendet.</div>
+            </div>
+
+            <div class="field">
+              <label for="pds-url" id="pdsLabel">PDS-Host</label>
+              <input id="pds-url" name="pdsUrl" type="url" autocomplete="url" placeholder="https://bsky.social" value="https://bsky.social" />
+              <div class="hint" id="pdsHint">Optional. Leer lassen oder den Standardwert für gehostete Bluesky-Konten verwenden.</div>
+            </div>
+
+            <div class="actions">
+              <button id="submit-button" type="submit">Bluesky-Konto verbinden</button>
+              <span class="hint" id="actionHint">Nach erfolgreicher Verbindung wirst du zurück zur Account-Übersicht geleitet.</span>
+            </div>
+          </form>
+
+          <div class="footer" id="footerText">
+            Dieses Plugin nutzt die generische FediSuite-Provider-Schnittstelle, hält die Bluesky-spezifische Logik aber vollständig im Plugin.
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./bluesky-connect.js"></script>
+  </body>
+</html>

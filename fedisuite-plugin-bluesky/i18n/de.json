@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "name": "Bluesky-Provider",
+    "description": "Fügt Bluesky als zusätzliche Plattform mit Account-Verbindung, Publishing, Import und Statistikaktualisierung hinzu."
+  },
+  "providers": {
+    "main": {
+      "displayName": "Bluesky",
+      "description": "Verbinde ein Bluesky-Konto über Handle, App-Passwort und optionalen PDS-Host."
+    }
+  }
+}

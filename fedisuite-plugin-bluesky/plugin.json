@@ -1,0 +1,21 @@
+{
+  "id": "fedisuite-plugin-bluesky",
+  "name": "Bluesky Provider",
+  "version": "1.0.0",
+  "pluginApiVersion": 1,
+  "description": "Adds Bluesky account connections, publishing, imports and analytics refreshes to FediSuite.",
+  "webEntry": "./web/manifest.json",
+  "i18nDir": "./i18n",
+  "displayNameKey": "meta.name",
+  "descriptionKey": "meta.description",
+  "author": "FediSuite OSS",
+  "license": "GPL-3.0-or-later",
+  "capabilities": [
+    "provider"
+  ],
+  "requiredPermissions": [
+    "providers",
+    "web.runtime"
+  ],
+  "serverEntry": "./server/index.js"
+}
