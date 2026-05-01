@@ -176,6 +176,42 @@ async function createSession({ identifier, appPassword, pdsUrl }) {
   return response.data || {};
 }
 
+function getBlueskyErrorDetail(response, fallback) {
+  return response?.data?.message || response?.data?.error || fallback;
+}
+
+function isBlueskyAuthFailure(response) {
+  const status = Number(response?.status || 0);
+  const normalized = String(getBlueskyErrorDetail(response, '') || '').toLowerCase();
+  if (status === 401) return true;
+  return normalized.includes('token has expired')
+    || normalized.includes('expired token')
+    || normalized.includes('invalid token')
+    || normalized.includes('authentication required');
+}
+
+async function clearAuthError(account, pool) {
+  if (!account?.id || !account?.auth_error_code) return;
+  await pool.query(
+    'UPDATE accounts SET auth_error_code = NULL, auth_error_message = NULL, auth_error_at = NULL WHERE id = $1',
+    [account.id]
+  );
+  account.auth_error_code = null;
+  account.auth_error_message = null;
+  account.auth_error_at = null;
+}
+
+async function markReauthRequired(account, pool, message) {
+  if (!account?.id) return;
+  await pool.query(
+    'UPDATE accounts SET auth_error_code = $1, auth_error_message = $2, auth_error_at = NOW() WHERE id = $3',
+    ['oauth_reauth_required', String(message || 'invalid_token'), account.id]
+  );
+  account.auth_error_code = 'oauth_reauth_required';
+  account.auth_error_message = String(message || 'invalid_token');
+  account.auth_error_at = new Date().toISOString();
+}
+
 async function refreshSession(account, pool) {
   const response = await atprotoRequest({
     url: `${trimTrailingSlash(account.instance_url)}/xrpc/com.atproto.server.refreshSession`,
@@ -186,7 +222,11 @@ async function refreshSession(account, pool) {
   });
 
   if (response.status >= 400) {
-    throw new Error(response.data?.message || response.data?.error || 'Bluesky session refresh failed.');
+    const detail = getBlueskyErrorDetail(response, 'Bluesky session refresh failed.');
+    if (isBlueskyAuthFailure(response)) {
+      await markReauthRequired(account, pool, detail);
+    }
+    throw new Error(detail);
   }
 
   const session = response.data || {};
@@ -205,6 +245,8 @@ async function refreshSession(account, pool) {
   if (session.handle) {
     account.username = session.handle;
   }
+
+  await clearAuthError(account, pool);
 
   return session;
 }
@@ -229,8 +271,14 @@ async function authedRequest({ account, pool, method = 'GET', endpoint, params, 
   }
 
   if (response.status >= 400) {
-    throw new Error(response.data?.message || response.data?.error || `Bluesky request failed for ${endpoint}.`);
+    const detail = getBlueskyErrorDetail(response, `Bluesky request failed for ${endpoint}.`);
+    if (isBlueskyAuthFailure(response)) {
+      await markReauthRequired(account, pool, detail);
+    }
+    throw new Error(detail);
   }
+
+  await clearAuthError(account, pool);
 
   return response.data;
 }
