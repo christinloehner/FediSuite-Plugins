@@ -164,11 +164,8 @@ In the default setup from the `FediSuite` repository, that usually means:
 Inside each relevant service, add this line under `volumes`:
 
 ```yaml
-- ./plugins:/app/plugins:ro
+- ./plugins:/app/plugins
 ```
-
-`ro` means read-only.
-That is recommended, because FediSuite only needs to read plugin files.
 
 ### 5. Example Compose Configuration
 
@@ -183,7 +180,7 @@ For `app`:
       - .env
     volumes:
       - uploads_data:/app/uploads
-      - ./plugins:/app/plugins:ro
+      - ./plugins:/app/plugins
 ```
 
 For `worker1`:
@@ -195,7 +192,7 @@ For `worker1`:
       - .env
     volumes:
       - uploads_data:/app/uploads
-      - ./plugins:/app/plugins:ro
+      - ./plugins:/app/plugins
 ```
 
 For `worker2`:
@@ -207,7 +204,7 @@ For `worker2`:
       - .env
     volumes:
       - uploads_data:/app/uploads
-      - ./plugins:/app/plugins:ro
+      - ./plugins:/app/plugins
 ```
 
 If your `docker-compose.yml` already has a `volumes:` section for a service, only add the new plugin line below the existing one.
@@ -273,7 +270,7 @@ That is usually enough.
 
 If you want to remove all plugins from your setup:
 
-1. remove or comment out the `./plugins:/app/plugins:ro` lines from `docker-compose.yml`
+1. remove or comment out the `./plugins:/app/plugins` lines from `docker-compose.yml`
 2. restart the containers
 
 If you want to keep plugins enabled in general but remove one specific plugin:
@@ -341,13 +338,13 @@ or:
 - change the compose mount accordingly, for example:
 
 ```yaml
-- ./FediSuite-Plugins:/app/plugins:ro
+- ./FediSuite-Plugins:/app/plugins
 ```
 
 But the recommended and easiest setup is still:
 
 ```yaml
-- ./plugins:/app/plugins:ro
+- ./plugins:/app/plugins
 ```
 
 ### The Plugin Repo Was Cloned Somewhere Else
@@ -357,12 +354,12 @@ That can also work, but then your compose file must point to the real location.
 Example:
 
 ```yaml
-- /home/yourname/FediSuite-Plugins:/app/plugins:ro
+- /home/yourname/FediSuite-Plugins:/app/plugins
 ```
 
 This is valid, but it is less portable and usually less convenient than keeping the plugin repo directly inside the main FediSuite folder.
 
-For most self-hosters, `./plugins:/app/plugins:ro` is the best option.
+For most self-hosters, `./plugins:/app/plugins` is the best option.
 
 ### I Changed the Files but Nothing Happens
 
