@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "My Plugin",
+    "description": "A FediSuite plugin scaffold for My Plugin."
+  },
+  "adminSections": {
+    "main": {
+      "title": "My Plugin Admin",
+      "description": "Dies ist die plugin-eigene Admin-Sektion von My Plugin.",
+      "badge": "Plugin",
+      "markdown": "Diese Admin-Seite wurde durch das Plugin **My Plugin** registriert.\n\n- eigener Admin-Eintrag\n- sichere Plugin-Integration\n- bereit zum Anpassen"
+    }
+  }
+}

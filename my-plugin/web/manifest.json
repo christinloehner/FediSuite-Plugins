@@ -1,0 +1,9 @@
+{
+  "frontendApiVersion": 1,
+  "adminPages": [
+    {
+      "sectionId": "main",
+      "entry": "admin-main.html"
+    }
+  ]
+}

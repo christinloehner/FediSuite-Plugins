@@ -1,0 +1,22 @@
+{
+  "id": "my-plugin",
+  "name": "My Plugin",
+  "version": "1.0.0",
+  "pluginApiVersion": 1,
+  "description": "A FediSuite plugin scaffold for My Plugin.",
+  "i18nDir": "./i18n",
+  "displayNameKey": "meta.name",
+  "descriptionKey": "meta.description",
+  "author": "Your Name",
+  "license": "GPL-3.0-or-later",
+  "capabilities": [
+    "admin.section"
+  ],
+  "requiredPermissions": [
+    "admin.sections",
+    "web.runtime",
+    "api.routes"
+  ],
+  "webEntry": "./web/manifest.json",
+  "serverEntry": "./server/index.js"
+}
