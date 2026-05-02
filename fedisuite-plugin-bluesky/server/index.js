@@ -305,13 +305,14 @@ async function authedRequest({ account, pool, method = 'GET', endpoint, params, 
   });
 
   let response = await execute();
-  if (response.status === 401 && account.refresh_token) {
+  const isAuthFailure = isBlueskyAuthFailure(response);
+  if ((response.status === 401 || isAuthFailure) && account.refresh_token) {
     const recoveredFromDb = await refreshAccountAuthStateFromDb(account, pool, endpoint);
     if (recoveredFromDb) {
       response = await execute();
     }
 
-    if (response.status === 401) {
+    if (response.status === 401 || isBlueskyAuthFailure(response)) {
       try {
         await refreshSession(account, pool);
       } catch (refreshErr) {
