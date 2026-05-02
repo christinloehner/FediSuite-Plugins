@@ -212,6 +212,48 @@ async function markReauthRequired(account, pool, message) {
   account.auth_error_at = new Date().toISOString();
 }
 
+async function loadLatestAccountAuthState(accountId, pool) {
+  if (!accountId) return null;
+  const result = await pool.query(
+    `SELECT id, access_token, refresh_token, client_id, username, display_name, avatar_url, auth_error_code, auth_error_message, auth_error_at
+     FROM accounts
+     WHERE id = $1`,
+    [accountId]
+  );
+  return result.rows[0] || null;
+}
+
+function syncAccountAuthState(account, latestAccount) {
+  if (!account || !latestAccount) return false;
+
+  const previousAccessToken = account.access_token;
+  const previousRefreshToken = account.refresh_token;
+
+  account.access_token = latestAccount.access_token;
+  account.refresh_token = latestAccount.refresh_token;
+  account.client_id = latestAccount.client_id || account.client_id;
+  account.username = latestAccount.username || account.username;
+  account.display_name = latestAccount.display_name || account.display_name;
+  account.avatar_url = latestAccount.avatar_url || account.avatar_url;
+  account.auth_error_code = latestAccount.auth_error_code || null;
+  account.auth_error_message = latestAccount.auth_error_message || null;
+  account.auth_error_at = latestAccount.auth_error_at || null;
+
+  return previousAccessToken !== account.access_token || previousRefreshToken !== account.refresh_token;
+}
+
+async function refreshAccountAuthStateFromDb(account, pool, purpose) {
+  if (!account?.id || !pool) return false;
+  const latestAccount = await loadLatestAccountAuthState(account.id, pool);
+  if (!latestAccount) return false;
+
+  const changed = syncAccountAuthState(account, latestAccount);
+  if (changed) {
+    console.warn(`[Bluesky] Reused fresh session tokens for account ${account.id} while handling ${purpose}.`);
+  }
+  return changed;
+}
+
 async function refreshSession(account, pool) {
   const response = await atprotoRequest({
     url: `${trimTrailingSlash(account.instance_url)}/xrpc/com.atproto.server.refreshSession`,
@@ -222,11 +264,9 @@ async function refreshSession(account, pool) {
   });
 
   if (response.status >= 400) {
-    const detail = getBlueskyErrorDetail(response, 'Bluesky session refresh failed.');
-    if (isBlueskyAuthFailure(response)) {
-      await markReauthRequired(account, pool, detail);
-    }
-    throw new Error(detail);
+    const error = new Error(getBlueskyErrorDetail(response, 'Bluesky session refresh failed.'));
+    error.response = response;
+    throw error;
   }
 
   const session = response.data || {};
@@ -266,13 +306,40 @@ async function authedRequest({ account, pool, method = 'GET', endpoint, params, 
 
   let response = await execute();
   if (response.status === 401 && account.refresh_token) {
-    await refreshSession(account, pool);
-    response = await execute();
+    const recoveredFromDb = await refreshAccountAuthStateFromDb(account, pool, endpoint);
+    if (recoveredFromDb) {
+      response = await execute();
+    }
+
+    if (response.status === 401) {
+      try {
+        await refreshSession(account, pool);
+      } catch (refreshErr) {
+        const recoveredAfterRefreshFailure = await refreshAccountAuthStateFromDb(account, pool, endpoint);
+        if (!recoveredAfterRefreshFailure) {
+          if (isBlueskyAuthFailure(refreshErr?.response)) {
+            const refreshDetail = getBlueskyErrorDetail(refreshErr.response, refreshErr.message);
+            await markReauthRequired(account, pool, refreshDetail);
+          }
+          throw refreshErr;
+        }
+      }
+
+      response = await execute();
+    }
   }
 
   if (response.status >= 400) {
     const detail = getBlueskyErrorDetail(response, `Bluesky request failed for ${endpoint}.`);
     if (isBlueskyAuthFailure(response)) {
+      const recoveredFromDb = await refreshAccountAuthStateFromDb(account, pool, endpoint);
+      if (recoveredFromDb) {
+        response = await execute();
+        if (response.status < 400) {
+          await clearAuthError(account, pool);
+          return response.data;
+        }
+      }
       await markReauthRequired(account, pool, detail);
     }
     throw new Error(detail);
