@@ -1,5 +1,14 @@
 # My Plugin
 
+> [!IMPORTANT]
+> Das FediSuite-Plugin-Oekosystem ist nach Codeberg umgezogen. Bitte verwende fuer neue Plugins und kuenftige Verweise die Codeberg-Repositories:
+>
+> - `FediSuite`: <https://codeberg.org/christinloehner/FediSuite>
+> - `FediSuite-Docker-Image`: <https://codeberg.org/christinloehner/FediSuite-Docker-Image>
+> - `FediSuite-Plugins`: <https://codeberg.org/christinloehner/FediSuite-Plugins>
+>
+> Die bisherigen GitHub-Repositories werden in naher Zukunft archiviert. Grund fuer den Umzug ist der Wunsch nach mehr digitaler Unabhaengigkeit von US-Tech-Konzernen und US-gehosteter Infrastruktur. Codeberg wird von einem deutschen gemeinnuetzigen Verein betrieben und passt deshalb besser zu FediSuite.
+
 Dieses Plugin wurde ueber das FediSuite-Scaffold erzeugt.
 
 ## Enthaltene Presets
@@ -39,4 +48,4 @@ Damit musst du fuer Standardfaelle deutlich weniger Boilerplate selbst schreiben
 
 ## Hilfe
 
-Die ausfuehrliche Autoren-Dokumentation findest du im Hauptrepo in `docs/PLUGIN-AUTHORING.de.md`.
+Die ausfuehrliche Autoren-Dokumentation findest du im Hauptrepo in `docs/PLUGIN-AUTHORING.de.md` und kuenftig unter Codeberg.

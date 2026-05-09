@@ -1,5 +1,12 @@
 # FediSuite Plugins
 
+> [!IMPORTANT]
+> Dieses Repository ist nach Codeberg umgezogen: <https://codeberg.org/christinloehner/FediSuite-Plugins>
+>
+> Das GitHub-Repository wird in naher Zukunft archiviert. Bitte nutze fuer alle kuenftigen Klone, Updates und Verweise ausschliesslich das neue Repository auf Codeberg.
+>
+> Grund fuer den Umzug: FediSuite soll bewusst unabhaengiger von grossen US-Tech-Konzernen und US-gehosteter Infrastruktur werden. GitHub gehoert Microsoft und wird auf US-Infrastruktur betrieben, was mit Blick auf digitale Souveraenitaet und Gesetze wie den US CLOUD Act berechtigte Datenschutz- und Zugriffsfragen aufwirft. Codeberg wird von einem deutschen gemeinnuetzigen Verein betrieben und passt deutlich besser zu einem Projekt, das auf digitale Unabhaengigkeit, Self-Hosting und europaeische Infrastruktur setzt.
+
 Dieses Repository enthält Plugins für die selbst gehostete FediSuite-App.
 
 Das Ziel ist ganz einfach:
@@ -61,7 +68,7 @@ Dieses Plugin fügt Bluesky-Unterstützung zu FediSuite hinzu.
 
 Du solltest bereits ein funktionierendes oder geplantes Self-Hosting-Setup für FediSuite auf Basis dieses Repositories haben:
 
-- <https://github.com/christinloehner/FediSuite>
+- <https://codeberg.org/christinloehner/FediSuite>
 
 Außerdem brauchst du:
 
@@ -71,7 +78,7 @@ Außerdem brauchst du:
 
 Falls du FediSuite noch nicht installiert hast, beginne zuerst mit dem Haupt-Repository für Self-Hosting:
 
-- <https://github.com/christinloehner/FediSuite>
+- <https://codeberg.org/christinloehner/FediSuite>
 
 ## Empfohlene Ordnerstruktur
 
@@ -102,7 +109,7 @@ Wichtig ist:
 Falls du das noch nicht getan hast:
 
 ```bash
-git clone https://github.com/christinloehner/FediSuite.git
+git clone https://codeberg.org/christinloehner/FediSuite.git
 cd FediSuite
 ```
 
@@ -117,7 +124,7 @@ cd /pfad/zu/deinem/FediSuite
 Innerhalb deines `FediSuite`-Ordners führe aus:
 
 ```bash
-git clone https://github.com/christinloehner/FediSuite-Plugins.git plugins
+git clone https://codeberg.org/christinloehner/FediSuite-Plugins.git plugins
 ```
 
 Wichtig:
@@ -427,9 +434,9 @@ Im Standard-Setup des offiziellen Self-Hosting-Repositories bedeutet das `app`, 
 ## Verwandte Repositories
 
 - Haupt-Repository für Self-Hosting:
-  <https://github.com/christinloehner/FediSuite>
+  <https://codeberg.org/christinloehner/FediSuite>
 - Haupt-Quellcode-Repository:
-  <https://github.com/christinloehner/FediSuite-Docker-Image>
+  <https://codeberg.org/christinloehner/FediSuite-Docker-Image>
 
 ## Lizenz
 

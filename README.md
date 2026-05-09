@@ -1,5 +1,12 @@
 # FediSuite Plugins
 
+> [!IMPORTANT]
+> This repository has moved to Codeberg: <https://codeberg.org/christinloehner/FediSuite-Plugins>
+>
+> The GitHub repository will be archived in the near future. Please use the new Codeberg repository for all future clones, updates and references.
+>
+> Reason for the move: FediSuite is intentionally moving away from dependence on large US technology corporations and US-hosted infrastructure. GitHub is owned by Microsoft and operates on US infrastructure, which raises legitimate digital-sovereignty and privacy concerns in light of laws such as the US CLOUD Act. Codeberg is operated by a German non-profit organization and is a much better fit for a project that values self-hosting, independence and European infrastructure.
+
 This repository contains plugins for the self-hosted FediSuite app.
 
 The goal is simple:
@@ -61,7 +68,7 @@ That plugin adds Bluesky support to FediSuite.
 
 You should already have a working or planned self-hosted FediSuite setup based on:
 
-- <https://github.com/christinloehner/FediSuite>
+- <https://codeberg.org/christinloehner/FediSuite>
 
 You also need:
 
@@ -71,7 +78,7 @@ You also need:
 
 If you have not installed FediSuite yet, start with the main self-hosting repository first:
 
-- <https://github.com/christinloehner/FediSuite>
+- <https://codeberg.org/christinloehner/FediSuite>
 
 ## Recommended Folder Structure
 
@@ -102,7 +109,7 @@ The important part is:
 If you have not done that yet:
 
 ```bash
-git clone https://github.com/christinloehner/FediSuite.git
+git clone https://codeberg.org/christinloehner/FediSuite.git
 cd FediSuite
 ```
 
@@ -117,7 +124,7 @@ cd /path/to/your/FediSuite
 Inside your `FediSuite` folder, run:
 
 ```bash
-git clone https://github.com/christinloehner/FediSuite-Plugins.git plugins
+git clone https://codeberg.org/christinloehner/FediSuite-Plugins.git plugins
 ```
 
 Important:
@@ -427,9 +434,9 @@ In the standard setup from the official self-hosting repository, that means `app
 ## Related Repositories
 
 - Main self-hosting repository:
-  <https://github.com/christinloehner/FediSuite>
+  <https://codeberg.org/christinloehner/FediSuite>
 - Main source code repository:
-  <https://github.com/christinloehner/FediSuite-Docker-Image>
+  <https://codeberg.org/christinloehner/FediSuite-Docker-Image>
 
 ## License
 
