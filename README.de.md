@@ -5,6 +5,8 @@
 >
 > Das GitHub-Repository wird in naher Zukunft archiviert. Bitte nutze fuer alle kuenftigen Klone, Updates und Verweise ausschliesslich das neue Repository auf Codeberg.
 >
+> Bugreports, Issues, Feature Requests und Contributions werden ab sofort nur noch ueber das zentrale Quellcode-Repository auf Codeberg angenommen: <https://codeberg.org/christinloehner/FediSuite-Docker-Image>. Neue Issues muessen hier erstellt werden: <https://codeberg.org/christinloehner/FediSuite-Docker-Image/issues>
+>
 > Grund fuer den Umzug: FediSuite soll bewusst unabhaengiger von grossen US-Tech-Konzernen und US-gehosteter Infrastruktur werden. GitHub gehoert Microsoft und wird auf US-Infrastruktur betrieben, was mit Blick auf digitale Souveraenitaet und Gesetze wie den US CLOUD Act berechtigte Datenschutz- und Zugriffsfragen aufwirft. Codeberg wird von einem deutschen gemeinnuetzigen Verein betrieben und passt deutlich besser zu einem Projekt, das auf digitale Unabhaengigkeit, Self-Hosting und europaeische Infrastruktur setzt.
 
 Dieses Repository enthält Plugins für die selbst gehostete FediSuite-App.

@@ -5,6 +5,8 @@
 >
 > The GitHub repository will be archived in the near future. Please use the new Codeberg repository for all future clones, updates and references.
 >
+> Bug reports, issues, feature requests and contributions are now accepted only via the main source repository on Codeberg: <https://codeberg.org/christinloehner/FediSuite-Docker-Image>. New issues must be created here: <https://codeberg.org/christinloehner/FediSuite-Docker-Image/issues>
+>
 > Reason for the move: FediSuite is intentionally moving away from dependence on large US technology corporations and US-hosted infrastructure. GitHub is owned by Microsoft and operates on US infrastructure, which raises legitimate digital-sovereignty and privacy concerns in light of laws such as the US CLOUD Act. Codeberg is operated by a German non-profit organization and is a much better fit for a project that values self-hosting, independence and European infrastructure.
 
 This repository contains plugins for the self-hosted FediSuite app.
